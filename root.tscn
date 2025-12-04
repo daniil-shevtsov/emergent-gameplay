@@ -1,0 +1,14 @@
+[gd_scene load_steps=4 format=3 uid="uid://dhxuj2iokiock"]
+
+[ext_resource type="PackedScene" uid="uid://c5b668hbaymki" path="res://Player.tscn" id="1_pyidc"]
+[ext_resource type="Script" uid="uid://coiaf6dq4ipx" path="res://Game.cs" id="1_vvh5c"]
+[ext_resource type="PackedScene" uid="uid://bnw21fa014uf6" path="res://enemy.tscn" id="2_pyidc"]
+
+[node name="Root" type="Node2D"]
+script = ExtResource("1_vvh5c")
+
+[node name="Player" parent="." instance=ExtResource("1_pyidc")]
+position = Vector2(583, 304)
+
+[node name="Enemy" parent="." instance=ExtResource("2_pyidc")]
+position = Vector2(537, 110)

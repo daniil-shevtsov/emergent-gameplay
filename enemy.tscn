@@ -1,0 +1,37 @@
+[gd_scene load_steps=5 format=3 uid="uid://bnw21fa014uf6"]
+
+[ext_resource type="Script" uid="uid://cbygy8rumoljm" path="res://Enemy.cs" id="1_4gyqm"]
+[ext_resource type="PackedScene" uid="uid://d3402vxkq7lks" path="res://gun.tscn" id="1_7k104"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_pq8q7"]
+radius = 60.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_4gyqm"]
+radius = 158.0
+height = 542.0
+
+[node name="Enemy" type="CharacterBody2D"]
+script = ExtResource("1_4gyqm")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_pq8q7")
+
+[node name="Gun" parent="." instance=ExtResource("1_7k104")]
+position = Vector2(74, -2)
+rotation = -1.5707964
+
+[node name="ShootRangeStart" type="Marker2D" parent="."]
+position = Vector2(-107, 0)
+rotation = -1.5707964
+
+[node name="ShootRangeEnd" type="Marker2D" parent="."]
+position = Vector2(110, -3)
+rotation = -1.5707964
+
+[node name="SightArea" type="Area2D" parent="."]
+rotation = -1.5707964
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SightArea"]
+position = Vector2(5, 128)
+rotation = 1.5707964
+shape = SubResource("CapsuleShape2D_4gyqm")

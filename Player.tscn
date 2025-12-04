@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://c5b668hbaymki"]
+
+[ext_resource type="Script" uid="uid://dhka10qb65k0c" path="res://Player.cs" id="1_xhfnw"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_vho56"]
+radius = 50.0
+
+[node name="CharacterBody2D" type="CharacterBody2D"]
+script = ExtResource("1_xhfnw")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("CircleShape2D_vho56")
