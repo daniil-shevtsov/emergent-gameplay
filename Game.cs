@@ -8,6 +8,8 @@ public partial class Game : Node2D
 	private Enemy _enemy;
 
 	private bool _isPlayerInSight = false;
+
+	private bool _isPlayerInRun = false;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
@@ -17,7 +19,7 @@ public partial class Game : Node2D
 		_enemy._sightArea.ProcessMode = ProcessModeEnum.Disabled;
 		_enemy._sightArea.BodyEntered += body =>
 		{
-			GD.Print("body entered");
+			GD.Print("body entered sight");
 			if (body is Player)
 			{
 				_isPlayerInSight = true;
@@ -25,10 +27,26 @@ public partial class Game : Node2D
 		};
 		_enemy._sightArea.BodyExited += body =>
 		{
-			GD.Print("body entered");
+			GD.Print("body exited sign");
 			if (body is Player)
 			{
 				_isPlayerInSight = false;
+			}
+		};
+		_enemy._runArea.BodyEntered += body =>
+		{
+			GD.Print("body entered run");
+			if (body is Player)
+			{
+				_isPlayerInRun = true;
+			}
+		};
+		_enemy._runArea.BodyExited += body =>
+		{
+			GD.Print("body exited run");
+			if (body is Player)
+			{
+				_isPlayerInRun = false;
 			}
 		};
 		_enemy._sightArea.ProcessMode = ProcessModeEnum.Inherit;
@@ -40,6 +58,11 @@ public partial class Game : Node2D
 		if (_isPlayerInSight)
 		{
 			_enemy.onPlayerDetected(_player.GlobalPosition);
+		}
+
+		if (_isPlayerInRun && !_isPlayerInSight)
+		{
+			_enemy.SetRunTarget(_player._frontMarker.GlobalPosition);
 		}
 	}
 }

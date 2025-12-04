@@ -10,3 +10,15 @@ script = ExtResource("1_xhfnw")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = SubResource("CircleShape2D_vho56")
+
+[node name="FrontMarker" type="Marker2D" parent="."]
+position = Vector2(128, 0)
+
+[node name="LeftMarker" type="Marker2D" parent="."]
+position = Vector2(0, -106)
+
+[node name="RightMarker" type="Marker2D" parent="."]
+position = Vector2(0, 97)
+
+[node name="BackMarker" type="Marker2D" parent="."]
+position = Vector2(-115, 0)

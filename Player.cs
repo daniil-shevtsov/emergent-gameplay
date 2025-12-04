@@ -5,6 +5,14 @@ public partial class Player : CharacterBody2D
 {
 	public const float Speed = 600.0f;
 
+	public Marker2D _frontMarker;
+	
+	public override void _Ready()
+	{
+		base._Ready();
+		_frontMarker = GetNode<Marker2D>("FrontMarker");
+	}
+
 	public override void _PhysicsProcess(double delta)
 	{
 		Vector2 velocity = Velocity;

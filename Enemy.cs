@@ -5,14 +5,22 @@ public partial class Enemy : CharacterBody2D
 {
 	public Gun _gun;
 	public Area2D _sightArea;
+	public Area2D _runArea;
 	public const float Speed = 300.0f;
 	
 	private Vector2? _lastKnownTargetPosition = null;
+	private Vector2? _runTargetPosition = null;
 
 	public override void _Ready()
 	{
 		_gun = GetNode<Gun>("Gun");
 		_sightArea = GetNode<Area2D>("SightArea");
+		_runArea = GetNode<Area2D>("RunArea");
+	}
+
+	public void SetRunTarget(Vector2 target)
+	{
+		_runTargetPosition = target;
 	}
 
 	public void onPlayerDetected(Vector2 globalPosition)
@@ -26,6 +34,13 @@ public partial class Enemy : CharacterBody2D
 		Vector2 velocity = Velocity;
 
 		Vector2 direction = Vector2.Zero;
+
+		if (_runTargetPosition != null)
+		{
+			direction = GlobalPosition.DirectionTo(_runTargetPosition.Value);
+		}
+		_runTargetPosition = null;
+		
 		if (direction != Vector2.Zero)
 		{
 			velocity = direction * Speed;
