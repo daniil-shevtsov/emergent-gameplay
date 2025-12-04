@@ -55,11 +55,14 @@ public partial class Enemy : CharacterBody2D
 
 		if (_lastKnownTargetPosition != null)
 		{
-			var targetDirection = _lastKnownTargetPosition - GlobalPosition;
-			var degreesToTurn = 0f;
-			RotationDegrees += degreesToTurn;
-			
-			LookAt(_lastKnownTargetPosition.Value);
+			var rotationSpeed = 2;
+			var angle = (_lastKnownTargetPosition.Value - GlobalPosition).Angle();
+			GlobalRotation = Mathf.LerpAngle(GlobalRotation, angle, (float)delta * rotationSpeed);
+			// var targetDirection = _lastKnownTargetPosition - GlobalPosition;
+			// var degreesToTurn = 0f;
+			// RotationDegrees += degreesToTurn * (float)delta;
+			//
+			// LookAt(_lastKnownTargetPosition.Value);
 		}
 	}
 }
