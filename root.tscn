@@ -15,3 +15,4 @@ position = Vector2(537, 110)
 
 [node name="Enemy2" parent="." instance=ExtResource("2_pyidc")]
 position = Vector2(117, 591)
+rotation = -0.4362538

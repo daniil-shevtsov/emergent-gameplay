@@ -32,9 +32,13 @@ public partial class Enemy : CharacterBody2D
 		RunTargetPosition = target;
 	}
 
-	public void OnPlayerInRange(Vector2? globalPosition)
+	public void OnPlayerInRange(Vector2? globalPosition, bool isPlayerInRange)
 	{
-		_shootingTarget = globalPosition;
+		IsPlayerInRange = isPlayerInRange;
+		if (isPlayerInRange)
+		{
+			_shootingTarget = globalPosition;
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -53,7 +57,6 @@ public partial class Enemy : CharacterBody2D
 		
 		if (direction != Vector2.Zero && distance >= 5f)
 		{
-			GD.Print($"Enemy move in {direction} to {RunTargetPosition} with distance {distance}");
 			velocity = direction * Speed;
 		}
 		else

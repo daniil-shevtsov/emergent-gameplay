@@ -15,7 +15,7 @@ script = ExtResource("1_xhfnw")
 shape = SubResource("CircleShape2D_vho56")
 
 [node name="FrontMarker" type="Marker2D" parent="."]
-position = Vector2(128, 0)
+position = Vector2(247, 0)
 
 [node name="ColorRect" type="ColorRect" parent="FrontMarker"]
 offset_left = -21.0
@@ -28,7 +28,7 @@ color = Color(1, 1, 0.2509804, 1)
 position = Vector2(0, -106)
 
 [node name="RightMarker" type="Marker2D" parent="."]
-position = Vector2(0, 97)
+position = Vector2(-1, 203)
 
 [node name="ColorRect" type="ColorRect" parent="RightMarker"]
 offset_left = -19.0

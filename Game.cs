@@ -33,14 +33,15 @@ public partial class Game : Node2D
 				{
 					if (body is Player)
 					{
-						enemy.IsPlayerInRange = true;
+						enemy.OnPlayerInRange(body.GlobalPosition, true);
 					}
 				};
 				area2D.BodyExited += body =>
 				{
 					if (body is Player)
 					{
-						enemy.IsPlayerInRange = false;
+						enemy.OnPlayerInRange(null, false);
+
 					}
 				};
 				return true;
@@ -83,7 +84,6 @@ public partial class Game : Node2D
 
 	private void HandlePlayerHit(Bullet bullet)
 	{
-		GD.Print("Player hit");
 		bullet.QueueFree();
 		var bulletDamage = 10f;
 		_player.Health -= bulletDamage;
@@ -104,16 +104,8 @@ public partial class Game : Node2D
 	{
 		_enemies.ForEach((enemy) =>
 		{
-			if (enemy.IsPlayerInRange)
-			{
-				enemy.OnPlayerInRange(_player.GlobalPosition);
-			}
-			else
-			{
-				enemy.SetRunTarget(null);
-			}
-
-			if (enemy.IsPlayerInSight && !enemy.IsPlayerInRange && enemy.RunTargetPosition == null)
+			GD.Print($"{enemy.Id} IsPlayerInSight={enemy.IsPlayerInSight} IsPlayerInRange=${enemy.IsPlayerInRange} RunTargetPosition={enemy.RunTargetPosition} FrontOccupied={isFrontOccupied} RightOccupied={isRightOccupied}");
+			if (enemy.IsPlayerInSight)
 			{
 				if (!isFrontOccupied)
 				{
@@ -128,9 +120,13 @@ public partial class Game : Node2D
 					isRightOccupied = true;
 				}
 			}
+			else
+			{
+				enemy.SetRunTarget(null);
+			}
 
 			var isTimeToShoot = enemy._timer.TimeLeft == 0f;
-			if (isTimeToShoot)
+			if (isTimeToShoot && enemy.IsPlayerInRange)
 			{
 				var bullet = (Bullet) _bulletResource.Instantiate().Duplicate();
 				var bulletSpawnPosition = enemy._gun._endMarker.GlobalPosition;
