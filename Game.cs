@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using System.Linq.Expressions;
 
 public partial class Game : Node2D
 {
@@ -16,40 +17,54 @@ public partial class Game : Node2D
 		_player = GetNode<Player>("Player");
 		_enemy = GetNode<Enemy>("Enemy");
 
-		_enemy._sightArea.ProcessMode = ProcessModeEnum.Disabled;
-		_enemy._sightArea.BodyEntered += body =>
+		SetCallbackSafe(_enemy._sightArea, (area2D) =>
 		{
-			GD.Print("body entered sight");
-			if (body is Player)
+			area2D.BodyEntered += body =>
 			{
-				_isPlayerInSight = true;
-			}
-		};
-		_enemy._sightArea.BodyExited += body =>
+				GD.Print("body entered sight");
+				if (body is Player)
+				{
+					_isPlayerInSight = true;
+				}
+			};
+			area2D.BodyExited += body =>
+			{
+				GD.Print("body exited sight");
+				if (body is Player)
+				{
+					_isPlayerInSight = false;
+				}
+			};
+			return true;
+		});
+		
+		SetCallbackSafe(_enemy._runArea, (area2D) =>
 		{
-			GD.Print("body exited sign");
-			if (body is Player)
+			area2D.BodyEntered += body =>
 			{
-				_isPlayerInSight = false;
-			}
-		};
-		_enemy._runArea.BodyEntered += body =>
-		{
-			GD.Print("body entered run");
-			if (body is Player)
+				GD.Print("body entered run");
+				if (body is Player)
+				{
+					_isPlayerInRun = true;
+				}
+			};
+			area2D.BodyExited += body =>
 			{
-				_isPlayerInRun = true;
-			}
-		};
-		_enemy._runArea.BodyExited += body =>
-		{
-			GD.Print("body exited run");
-			if (body is Player)
-			{
-				_isPlayerInRun = false;
-			}
-		};
-		_enemy._sightArea.ProcessMode = ProcessModeEnum.Inherit;
+				GD.Print("body exited run");
+				if (body is Player)
+				{
+					_isPlayerInRun = false;
+				}
+			};
+			return true;
+		});
+	}
+	
+	private void SetCallbackSafe(Area2D area2D, Func<Area2D, Boolean> callbackSetter)
+	{
+		area2D.ProcessMode = ProcessModeEnum.Disabled;
+		callbackSetter(area2D);
+		area2D.ProcessMode = ProcessModeEnum.Inherit;
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

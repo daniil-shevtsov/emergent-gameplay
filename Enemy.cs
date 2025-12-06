@@ -55,7 +55,7 @@ public partial class Enemy : CharacterBody2D
 
 		if (_lastKnownTargetPosition != null)
 		{
-			var rotationSpeed = 2;
+			var rotationSpeed = 1.5f;
 			var angle = (_lastKnownTargetPosition.Value - GlobalPosition).Angle();
 			GlobalRotation = Mathf.LerpAngle(GlobalRotation, angle, (float)delta * rotationSpeed);
 			// var targetDirection = _lastKnownTargetPosition - GlobalPosition;

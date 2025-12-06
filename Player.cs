@@ -6,11 +6,13 @@ public partial class Player : CharacterBody2D
 	public const float Speed = 600.0f;
 
 	public Marker2D _frontMarker;
+	public Area2D _bulletHitArea;
 	
 	public override void _Ready()
 	{
 		base._Ready();
 		_frontMarker = GetNode<Marker2D>("FrontMarker");
+		_bulletHitArea = GetNode<Area2D>("BulletHitArea");
 	}
 
 	public override void _PhysicsProcess(double delta)
