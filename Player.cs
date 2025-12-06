@@ -8,12 +8,14 @@ public partial class Player : CharacterBody2D
 	public float Health = 100f;
 
 	public Marker2D _frontMarker;
+	public Marker2D RightMarker;
 	public Area2D _damageArea;
 	
 	public override void _Ready()
 	{
 		base._Ready();
 		_frontMarker = GetNode<Marker2D>("FrontMarker");
+		RightMarker = GetNode<Marker2D>("RightMarker");
 		_damageArea = GetNode<Area2D>("DamageArea");
 	}
 

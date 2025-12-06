@@ -4,31 +4,37 @@ using System;
 public partial class Enemy : CharacterBody2D
 {
 	public Gun _gun;
-	public Area2D _sightArea;
-	public Area2D _runArea;
+	public Area2D RangeArea;
+	public Area2D SightArea;
 	public Timer _timer;
+	public ColorRect DebugIndicator;
 	public const float Speed = 300.0f;
+	public string Id = "";
 	
-	private Vector2? _lastKnownTargetPosition = null;
-	private Vector2? _runTargetPosition = null;
+	public  bool IsPlayerInRange = false;
+
+	public bool IsPlayerInSight = false;
+	
+	private Vector2? _shootingTarget = null;
+	public Vector2? RunTargetPosition = null;
 
 	public override void _Ready()
 	{
 		_gun = GetNode<Gun>("Gun");
-		_sightArea = GetNode<Area2D>("SightArea");
-		_runArea = GetNode<Area2D>("RunArea");
+		RangeArea = GetNode<Area2D>("RangeArea");
+		SightArea = GetNode<Area2D>("SightArea");
 		_timer = GetNode<Timer>("Timer");
+		DebugIndicator = (ColorRect)FindChild("DebugIndicator");
 	}
 
-	public void SetRunTarget(Vector2 target)
+	public void SetRunTarget(Vector2? target)
 	{
-		_runTargetPosition = target;
+		RunTargetPosition = target;
 	}
 
-	public void onPlayerDetected(Vector2 globalPosition)
+	public void OnPlayerInRange(Vector2? globalPosition)
 	{
-		_lastKnownTargetPosition = globalPosition;
-		
+		_shootingTarget = globalPosition;
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -37,14 +43,17 @@ public partial class Enemy : CharacterBody2D
 
 		Vector2 direction = Vector2.Zero;
 
-		if (_runTargetPosition != null)
+		var distance =0f;
+		if (RunTargetPosition != null)
 		{
-			direction = GlobalPosition.DirectionTo(_runTargetPosition.Value);
+			direction = GlobalPosition.DirectionTo(RunTargetPosition.Value);
+			distance = GlobalPosition.DistanceTo(RunTargetPosition.Value);
 		}
-		_runTargetPosition = null;
 		
-		if (direction != Vector2.Zero)
+		
+		if (direction != Vector2.Zero && distance >= 5f)
 		{
+			GD.Print($"Enemy move in {direction} to {RunTargetPosition} with distance {distance}");
 			velocity = direction * Speed;
 		}
 		else
@@ -55,16 +64,11 @@ public partial class Enemy : CharacterBody2D
 		Velocity = velocity;
 		MoveAndSlide();
 
-		if (_lastKnownTargetPosition != null)
+		if (_shootingTarget != null)
 		{
 			var rotationSpeed = 1.5f;
-			var angle = (_lastKnownTargetPosition.Value - GlobalPosition).Angle();
+			var angle = (_shootingTarget.Value - GlobalPosition).Angle();
 			GlobalRotation = Mathf.LerpAngle(GlobalRotation, angle, (float)delta * rotationSpeed);
-			// var targetDirection = _lastKnownTargetPosition - GlobalPosition;
-			// var degreesToTurn = 0f;
-			// RotationDegrees += degreesToTurn * (float)delta;
-			//
-			// LookAt(_lastKnownTargetPosition.Value);
 		}
 	}
 }

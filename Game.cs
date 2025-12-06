@@ -12,10 +12,6 @@ public partial class Game : Node2D
 	private Enemy _enemy;
 	private Enemy _enemy2;
 
-	private bool _isPlayerInSight = false;
-
-	private bool _isPlayerInRun = false;
-
 	private PackedScene? _bulletResource = null;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
@@ -27,42 +23,43 @@ public partial class Game : Node2D
 
 		_enemies.Add(_enemy);
 		_enemies.Add(_enemy2);
-		
+		var count = 0;
 		_enemies.ForEach(enemy =>
 		{
-			SetCallbackSafe(enemy._sightArea, (area2D) =>
+			enemy.Id = $"enemy_{count++}";
+			SetCallbackSafe(enemy.RangeArea, (area2D) =>
 			{
 				area2D.BodyEntered += body =>
 				{
 					if (body is Player)
 					{
-						_isPlayerInSight = true;
+						enemy.IsPlayerInRange = true;
 					}
 				};
 				area2D.BodyExited += body =>
 				{
 					if (body is Player)
 					{
-						_isPlayerInSight = false;
+						enemy.IsPlayerInRange = false;
 					}
 				};
 				return true;
 			});
 		
-			SetCallbackSafe(enemy._runArea, (area2D) =>
+			SetCallbackSafe(enemy.SightArea, (area2D) =>
 			{
 				area2D.BodyEntered += body =>
 				{
 					if (body is Player)
 					{
-						_isPlayerInRun = true;
+						enemy.IsPlayerInSight = true;
 					}
 				};
 				area2D.BodyExited += body =>
 				{
 					if (body is Player)
 					{
-						_isPlayerInRun = false;
+						enemy.IsPlayerInSight = false;
 					}
 				};
 				return true;
@@ -99,19 +96,37 @@ public partial class Game : Node2D
 		area2D.ProcessMode = ProcessModeEnum.Inherit;
 	}
 
+	private bool isFrontOccupied = false;
+	private bool isRightOccupied = false;
+
 	// Called every frame. 'delta' is the elapsed time since the previous frame.
 	public override void _Process(double delta)
 	{
 		_enemies.ForEach((enemy) =>
 		{
-			if (_isPlayerInSight)
+			if (enemy.IsPlayerInRange)
 			{
-				enemy.onPlayerDetected(_player.GlobalPosition);
+				enemy.OnPlayerInRange(_player.GlobalPosition);
+			}
+			else
+			{
+				enemy.SetRunTarget(null);
 			}
 
-			if (_isPlayerInRun && !_isPlayerInSight)
+			if (enemy.IsPlayerInSight && !enemy.IsPlayerInRange && enemy.RunTargetPosition == null)
 			{
-				enemy.SetRunTarget(_player._frontMarker.GlobalPosition);
+				if (!isFrontOccupied)
+				{
+					enemy.SetRunTarget(_player._frontMarker.GlobalPosition);
+					enemy.DebugIndicator.Color = _player._frontMarker.GetNode<ColorRect>("ColorRect").Color;
+					isFrontOccupied = true;
+				} else if (!isRightOccupied)
+				{
+					enemy.SetRunTarget(_player.RightMarker.GlobalPosition);
+					enemy.DebugIndicator.Color = _player.RightMarker.GetNode<ColorRect>("ColorRect").Color;
+
+					isRightOccupied = true;
+				}
 			}
 
 			var isTimeToShoot = enemy._timer.TimeLeft == 0f;
@@ -130,5 +145,7 @@ public partial class Game : Node2D
 				enemy._timer.Start();
 			}
 		});
+		isFrontOccupied = false;
+		isRightOccupied = false;
 	}
 }
