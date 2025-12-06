@@ -90,9 +90,13 @@ public partial class Game : Node2D
 			var bullet = (Bullet) _bulletResource.Instantiate().Duplicate();
 			var bulletSpawnPosition = _enemy._gun._endMarker.GlobalPosition;
 			var direction = (bulletSpawnPosition - _enemy.GlobalPosition).Normalized();
+			var bulletSpeed = 500f;
+			var bulletVelocity = direction * bulletSpeed;
 			
 			AddChild(bullet);
 			bullet.GlobalPosition = bulletSpawnPosition;
+			bullet.Rotation = bulletVelocity.Angle();
+			bullet.LinearVelocity = bulletVelocity;
 			_enemy._timer.Start();
 		}
 		
