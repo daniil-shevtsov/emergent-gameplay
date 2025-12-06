@@ -1,14 +1,11 @@
 using Godot;
 using System;
 
-public partial class Gun : StaticBody2D
+public partial class Bullet : RigidBody2D
 {
-
-	public Marker2D _endMarker;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
-		_endMarker = (Marker2D) GetNode("EndMarker");
 	}
 
 	// Called every frame. 'delta' is the elapsed time since the previous frame.

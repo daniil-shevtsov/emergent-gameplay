@@ -11,11 +11,14 @@ public partial class Game : Node2D
 	private bool _isPlayerInSight = false;
 
 	private bool _isPlayerInRun = false;
+
+	private PackedScene? _bulletResource = null;
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
 		_player = GetNode<Player>("Player");
 		_enemy = GetNode<Enemy>("Enemy");
+		_bulletResource = GD.Load<PackedScene>("res://bullet.tscn");
 
 		SetCallbackSafe(_enemy._sightArea, (area2D) =>
 		{
@@ -79,5 +82,19 @@ public partial class Game : Node2D
 		{
 			_enemy.SetRunTarget(_player._frontMarker.GlobalPosition);
 		}
+
+		var isTimeToShoot = _enemy._timer.TimeLeft == 0f;
+		GD.Print($"time {_enemy._timer.TimeLeft}");
+		if (isTimeToShoot)
+		{
+			var bullet = (Bullet) _bulletResource.Instantiate().Duplicate();
+			var bulletSpawnPosition = _enemy._gun._endMarker.GlobalPosition;
+			var direction = (bulletSpawnPosition - _enemy.GlobalPosition).Normalized();
+			
+			AddChild(bullet);
+			bullet.GlobalPosition = bulletSpawnPosition;
+			_enemy._timer.Start();
+		}
+		
 	}
 }

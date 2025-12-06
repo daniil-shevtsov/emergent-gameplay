@@ -27,6 +27,7 @@ position = Vector2(0, 97)
 position = Vector2(-115, 0)
 
 [node name="DamageArea" type="Area2D" parent="."]
+position = Vector2(0, 1)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DamageArea"]
 shape = SubResource("CircleShape2D_xhfnw")

@@ -6,6 +6,7 @@ public partial class Enemy : CharacterBody2D
 	public Gun _gun;
 	public Area2D _sightArea;
 	public Area2D _runArea;
+	public Timer _timer;
 	public const float Speed = 300.0f;
 	
 	private Vector2? _lastKnownTargetPosition = null;
@@ -16,6 +17,7 @@ public partial class Enemy : CharacterBody2D
 		_gun = GetNode<Gun>("Gun");
 		_sightArea = GetNode<Area2D>("SightArea");
 		_runArea = GetNode<Area2D>("RunArea");
+		_timer = GetNode<Timer>("Timer");
 	}
 
 	public void SetRunTarget(Vector2 target)

@@ -24,6 +24,9 @@ shape = SubResource("CircleShape2D_pq8q7")
 position = Vector2(74, -2)
 rotation = -1.5707964
 
+[node name="EndMarker" type="Marker2D" parent="Gun"]
+position = Vector2(-2.0107238e-06, 46)
+
 [node name="ShootRangeStart" type="Marker2D" parent="."]
 position = Vector2(-107, 0)
 rotation = -1.5707964
@@ -46,3 +49,7 @@ shape = SubResource("CapsuleShape2D_4gyqm")
 position = Vector2(421, -2)
 rotation = -1.5707964
 shape = SubResource("CapsuleShape2D_qi2p4")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true
+autostart = true
