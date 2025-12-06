@@ -24,7 +24,6 @@ public partial class Game : Node2D
 		{
 			area2D.BodyEntered += body =>
 			{
-				GD.Print("body entered sight");
 				if (body is Player)
 				{
 					_isPlayerInSight = true;
@@ -32,7 +31,6 @@ public partial class Game : Node2D
 			};
 			area2D.BodyExited += body =>
 			{
-				GD.Print("body exited sight");
 				if (body is Player)
 				{
 					_isPlayerInSight = false;
@@ -45,7 +43,6 @@ public partial class Game : Node2D
 		{
 			area2D.BodyEntered += body =>
 			{
-				GD.Print("body entered run");
 				if (body is Player)
 				{
 					_isPlayerInRun = true;
@@ -53,7 +50,6 @@ public partial class Game : Node2D
 			};
 			area2D.BodyExited += body =>
 			{
-				GD.Print("body exited run");
 				if (body is Player)
 				{
 					_isPlayerInRun = false;
@@ -61,6 +57,26 @@ public partial class Game : Node2D
 			};
 			return true;
 		});
+		
+		SetCallbackSafe(_player._damageArea, (area2D) =>
+		{
+			area2D.BodyEntered += body =>
+			{
+				if (body is Bullet bullet)
+				{
+					HandlePlayerHit(bullet);
+				}
+			};
+			return true;
+		});
+	}
+
+	private void HandlePlayerHit(Bullet bullet)
+	{
+		GD.Print("Player hit");
+		bullet.QueueFree();
+		var bulletDamage = 10f;
+		_player.Health -= bulletDamage;
 	}
 	
 	private void SetCallbackSafe(Area2D area2D, Func<Area2D, Boolean> callbackSetter)
@@ -84,7 +100,6 @@ public partial class Game : Node2D
 		}
 
 		var isTimeToShoot = _enemy._timer.TimeLeft == 0f;
-		GD.Print($"time {_enemy._timer.TimeLeft}");
 		if (isTimeToShoot)
 		{
 			var bullet = (Bullet) _bulletResource.Instantiate().Duplicate();

@@ -5,6 +5,8 @@ public partial class Player : CharacterBody2D
 {
 	public const float Speed = 600.0f;
 
+	public float Health = 100f;
+
 	public Marker2D _frontMarker;
 	public Area2D _damageArea;
 	
