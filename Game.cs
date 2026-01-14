@@ -120,7 +120,6 @@ public partial class Game : Node2D
 				{
 					enemy.SetRunTarget(_player.RightMarker.GlobalPosition);
 					enemy.DebugIndicator.Color = _player.RightMarker.GetNode<ColorRect>("ColorRect").Color;
-
 					isRightOccupied = true;
 				}
 			}

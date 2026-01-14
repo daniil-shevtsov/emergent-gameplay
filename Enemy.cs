@@ -85,5 +85,7 @@ public partial class Enemy : CharacterBody2D
 			var angle = (_shootingTarget.Value - GlobalPosition).Angle();
 			GlobalRotation = Mathf.LerpAngle(GlobalRotation, angle, (float)delta * rotationSpeed);
 		}
+
+		_gun.SetProgress((long)(_timer.TimeLeft/_timer.WaitTime*100.0));
 	}
 }

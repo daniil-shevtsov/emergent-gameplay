@@ -1,9 +1,15 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3402vxkq7lks"]
+[gd_scene load_steps=5 format=3 uid="uid://d3402vxkq7lks"]
 
 [ext_resource type="Script" uid="uid://8beliqasheb0" path="res://Gun.cs" id="1_vk1bi"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pq8q7"]
 size = Vector2(20, 59)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vk1bi"]
+bg_color = Color(0.25081807, 0.25081816, 0.250818, 1)
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_dk5gl"]
+bg_color = Color(0.13077214, 0.13077214, 0.13077202, 1)
 
 [node name="Gun" type="StaticBody2D"]
 collision_layer = 0
@@ -25,3 +31,15 @@ offset_top = -10.0
 offset_right = 10.0
 offset_bottom = 49.0
 color = Color(0.18359032, 0.1835905, 0.18359038, 1)
+
+[node name="ProgressBar" type="ProgressBar" parent="Node2D"]
+offset_left = -10.0
+offset_top = -10.0
+offset_right = 10.0
+offset_bottom = 49.0
+theme_override_font_sizes/font_size = 15
+theme_override_styles/background = SubResource("StyleBoxFlat_vk1bi")
+theme_override_styles/fill = SubResource("StyleBoxFlat_dk5gl")
+value = 50.0
+fill_mode = 3
+show_percentage = false
