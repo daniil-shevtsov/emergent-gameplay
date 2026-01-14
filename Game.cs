@@ -2,6 +2,7 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq.Expressions;
+using emergentgameplay.core.debug;
 
 public partial class Game : Node2D
 {
@@ -11,6 +12,8 @@ public partial class Game : Node2D
 
 	private Enemy _enemy;
 	private Enemy _enemy2;
+	
+	private DebugOverlay _debugOverlay;
 
 	private PackedScene? _bulletResource = null;
 	// Called when the node enters the scene tree for the first time.
@@ -20,6 +23,8 @@ public partial class Game : Node2D
 		_enemy = GetNode<Enemy>("Enemy");
 		_enemy2 = GetNode<Enemy>("Enemy2");
 		_bulletResource = GD.Load<PackedScene>("res://bullet.tscn");
+		_debugOverlay = GetNode<DebugOverlay>("DebugOverlay");
+		_debugOverlay.debugDraw.IsDebugEnabled = true;
 
 		_enemies.Add(_enemy);
 		_enemies.Add(_enemy2);
@@ -124,6 +129,7 @@ public partial class Game : Node2D
 			{
 				enemy.SetRunTarget(null);
 			}
+			DebugDrawSingleton.Instance.UpdateVectorToDraw(enemy.Id, _player.GlobalPosition, enemy.GlobalPosition);
 
 			var isTimeToShoot = enemy._timer.TimeLeft == 0f;
 			if (isTimeToShoot && enemy.IsPlayerInRange)
@@ -143,5 +149,7 @@ public partial class Game : Node2D
 		});
 		isFrontOccupied = false;
 		isRightOccupied = false;
+		
+		_debugOverlay.debugDraw.Redraw();
 	}
 }

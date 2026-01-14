@@ -5,4 +5,7 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
     <RootNamespace>emergentgameplay</RootNamespace>
   </PropertyGroup>
+  <ItemGroup>
+    <Content Include="core\debug\debug_overlay.tscn" />
+  </ItemGroup>
 </Project>
