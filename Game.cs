@@ -38,14 +38,14 @@ public partial class Game : Node2D
 				{
 					if (body is Player)
 					{
-						enemy.OnPlayerInRange(body.GlobalPosition, true);
+						enemy.OnPlayerInRange(true);
 					}
 				};
 				area2D.BodyExited += body =>
 				{
 					if (body is Player)
 					{
-						enemy.OnPlayerInRange(null, false);
+						enemy.OnPlayerInRange(false);
 
 					}
 				};
@@ -109,7 +109,6 @@ public partial class Game : Node2D
 	{
 		_enemies.ForEach((enemy) =>
 		{
-			GD.Print($"{enemy.Id} IsPlayerInSight={enemy.IsPlayerInSight} IsPlayerInRange=${enemy.IsPlayerInRange} RunTargetPosition={enemy.RunTargetPosition} FrontOccupied={isFrontOccupied} RightOccupied={isRightOccupied}");
 			if (enemy.IsPlayerInSight)
 			{
 				if (!isFrontOccupied)
@@ -129,6 +128,7 @@ public partial class Game : Node2D
 			{
 				enemy.SetRunTarget(null);
 			}
+			enemy.UpdateShootingPosition(_player.GlobalPosition);
 			DebugDrawSingleton.Instance.UpdateVectorToDraw(enemy.Id, _player.GlobalPosition, enemy.GlobalPosition);
 
 			var isTimeToShoot = enemy._timer.TimeLeft == 0f;

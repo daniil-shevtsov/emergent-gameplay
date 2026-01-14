@@ -1,5 +1,6 @@
 using Godot;
 using System;
+using emergentgameplay.core.debug;
 
 public partial class Enemy : CharacterBody2D
 {
@@ -32,12 +33,20 @@ public partial class Enemy : CharacterBody2D
 		RunTargetPosition = target;
 	}
 
-	public void OnPlayerInRange(Vector2? globalPosition, bool isPlayerInRange)
+	public void OnPlayerInRange(bool isPlayerInRange)
 	{
 		IsPlayerInRange = isPlayerInRange;
-		if (isPlayerInRange)
+	}
+	
+	public void UpdateShootingPosition(Vector2? globalPosition)
+	{
+		if (IsPlayerInRange)
 		{
 			_shootingTarget = globalPosition;
+		}
+		else
+		{
+			_shootingTarget = null;
 		}
 	}
 
@@ -52,6 +61,7 @@ public partial class Enemy : CharacterBody2D
 		{
 			direction = GlobalPosition.DirectionTo(RunTargetPosition.Value);
 			distance = GlobalPosition.DistanceTo(RunTargetPosition.Value);
+			DebugDrawSingleton.Instance.UpdateVectorToDraw($"enemy-direction {Id}", GlobalPosition, RunTargetPosition.Value);
 		}
 		
 		
@@ -69,6 +79,8 @@ public partial class Enemy : CharacterBody2D
 
 		if (_shootingTarget != null)
 		{
+			DebugDrawSingleton.Instance.UpdateVectorToDraw($"shooting-direction {Id}", GlobalPosition, _shootingTarget.Value, new Color(1f,0f,0f));
+			DebugDrawSingleton.Instance.UpdateVectorToDraw($"shooting-direction 2 {Id}", GlobalPosition, (_shootingTarget.Value - GlobalPosition), new Color(1f,0f,1f));
 			var rotationSpeed = 1.5f;
 			var angle = (_shootingTarget.Value - GlobalPosition).Angle();
 			GlobalRotation = Mathf.LerpAngle(GlobalRotation, angle, (float)delta * rotationSpeed);
