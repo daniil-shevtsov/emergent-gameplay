@@ -10,6 +10,7 @@ public partial class Player : CharacterBody2D
 	public Marker2D _frontMarker;
 	public Marker2D RightMarker;
 	public Area2D _damageArea;
+	public ProgressBar _progressBar;
 	
 	public override void _Ready()
 	{
@@ -17,6 +18,13 @@ public partial class Player : CharacterBody2D
 		_frontMarker = GetNode<Marker2D>("FrontMarker");
 		RightMarker = GetNode<Marker2D>("RightMarker");
 		_damageArea = GetNode<Area2D>("DamageArea");
+		_progressBar = (ProgressBar)FindChild("ProgressBar");
+	}
+	
+	public void UpdateDamage(float damage)
+	{
+		Health -= damage;
+		_progressBar.Value = Health;
 	}
 
 	public override void _PhysicsProcess(double delta)

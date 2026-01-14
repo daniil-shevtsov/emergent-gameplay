@@ -91,7 +91,7 @@ public partial class Game : Node2D
 	{
 		bullet.QueueFree();
 		var bulletDamage = 10f;
-		_player.Health -= bulletDamage;
+		_player.UpdateDamage(bulletDamage);
 	}
 	
 	private void SetCallbackSafe(Area2D area2D, Func<Area2D, Boolean> callbackSetter)

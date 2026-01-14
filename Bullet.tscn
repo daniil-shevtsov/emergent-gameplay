@@ -3,8 +3,7 @@
 [ext_resource type="Script" uid="uid://cy4aax52eaxtt" path="res://Bullet.cs" id="1_ayd6b"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_x3e43"]
-radius = 4.0
-height = 12.0
+radius = 8.0
 
 [node name="Bullet" type="RigidBody2D"]
 collision_layer = 2
@@ -19,8 +18,8 @@ shape = SubResource("CapsuleShape2D_x3e43")
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="ColorRect" type="ColorRect" parent="Node2D"]
-offset_left = -5.0
-offset_top = -3.0
-offset_right = 5.0
-offset_bottom = 3.0
+offset_left = -16.0
+offset_top = -9.0
+offset_right = 17.0
+offset_bottom = 9.0
 color = Color(0.072842635, 0.072842635, 0.072842635, 1)
